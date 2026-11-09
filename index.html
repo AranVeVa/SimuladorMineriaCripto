@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratorio Científico de Minería de Criptomonedas — Simulador Educativo</title>
+
+  <!-- Tipografía moderna: Space Grotesk (geométrica limpia) y JetBrains Mono (técnica de alta precisión) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <div class="app-contenedor-global" id="appRoot">
+
+    <!-- ====================================================================
+         BARRA SUPERIOR DE NAVEGACIÓN
+         ==================================================================== -->
+    <header class="barra-navegacion-superior" role="banner">
+      <div class="marca-laboratorio">
+        <div class="isotipo-cubo-lab" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+        </div>
+        <div class="marca-texto">
+          <h1>CriptoLab</h1>
+          <span>Laboratorio de Minería & PoW</span>
+        </div>
+      </div>
+
+      <!-- Pestañas de navegación de la aplicación -->
+      <nav role="navigation" aria-label="Navegación principal">
+        <ul class="menu-pestanas-nav">
+          <li>
+            <button type="button" class="enlace-nav-pestana activo" data-pestana="inicio">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+              <span>Inicio</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="enlace-nav-pestana" data-pestana="laboratorio">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"></rect><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><path d="M8 15h8"></path></svg>
+              <span>Laboratorio</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="enlace-nav-pestana" data-pestana="aprende">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+              <span>Aprende</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="enlace-nav-pestana" data-pestana="experimentos">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10 2v7.31L4.69 19.4a2 2 0 0 0 1.71 2.6h15.2a2 2 0 0 0 1.71-2.6L18 9.31V2"></path><line x1="8" y1="2" x2="20" y2="2"></line></svg>
+              <span>Experimentos</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="enlace-nav-pestana" data-pestana="evaluacion">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <span>Evaluación</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Herramientas globales -->
+      <div class="header-herramientas-derecha">
+        <div class="badge-progreso-global" id="lblProgresoHeader" title="Progreso de temas y actividades">
+          0/9 temas • Quiz pendiente
+        </div>
+
+        <button type="button" class="btn-header-accion" id="btnToggleSonido" title="Activar o desactivar sonido de laboratorio">
+          <span class="indicador-led activo-turquesa" id="ledSonidoHeader"></span>
+          <span>Audio</span>
+        </button>
+      </div>
+    </header>
+
+
+    <!-- ====================================================================
+         SECCIÓN A: INICIO — ¿QUÉ ES LA MINERÍA?
+         ==================================================================== -->
+    <main class="seccion-vista-app vista-activa" id="vista-inicio" role="main" aria-label="Pantalla de bienvenida">
+      <section class="hero-inicio-bienvenida">
+        <div class="hero-textos">
+          <span class="badge-hero-categoria">Simulador Científico Interactivo</span>
+          <h2>Descubre cómo funciona la minería digital</h2>
+          <p class="subtitulo-hero">
+            Conviértete en minero por un día y descubre cómo se verifican las transacciones, se crean nuevos bloques y se mantiene segura una red de criptomonedas.
+          </p>
+
+          <div class="caja-analogia-introductoria">
+            <strong>La analogía de la libreta comunitaria:</strong>
+            Imagina que muchas personas tienen una libreta compartida donde anotan los movimientos de dinero. Para evitar que alguien invente movimientos o modifique los anteriores, la red necesita una manera de verificar que todo sea correcto. En algunas criptomonedas, los mineros ayudan a realizar este trabajo mediante cálculos matemáticos.
+          </div>
+
+          <div class="hero-acciones-fila">
+            <button type="button" class="btn-cta-primario" id="btnInicioComenzar">
+              <span>Comenzar simulación</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+            <button type="button" class="btn-cta-secundario" id="btnInicioAprender">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              <span>Aprender primero</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Ilustración original de equipo minero SVG con aspas y luces -->
+        <div class="hero-grafico-equipo">
+          <div class="contenedor-svg-minero">
+            <svg viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-equipo-completo">
+              <!-- Chasis exterior -->
+              <rect x="25" y="40" width="350" height="240" rx="14" fill="#132233" stroke="#2A4563" stroke-width="3"/>
+              <rect x="35" y="52" width="330" height="70" rx="8" fill="#0B141F" stroke="#1F334A" stroke-width="1.5"/>
+              <rect x="35" y="132" width="330" height="135" rx="8" fill="#0B141F" stroke="#1F334A" stroke-width="1.5"/>
+
+              <!-- Ventilador 1 (Izquierdo) -->
+              <g transform="translate(115, 200)">
+                <circle cx="0" cy="0" r="48" fill="#17293D" stroke="#2A4563" stroke-width="2"/>
+                <g class="aspa-ventilador">
+                  <path d="M-6 -42 C-18 -20 -15 -10 0 0 C15 -10 18 -20 6 -42 Z" fill="#00F5D4" opacity="0.85"/>
+                  <path d="M42 -6 C20 -18 10 -15 0 0 C10 15 20 18 42 6 Z" fill="#00F5D4" opacity="0.85"/>
+                  <path d="M6 42 C18 20 15 10 0 0 C-15 10 -18 20 -6 42 Z" fill="#00F5D4" opacity="0.85"/>
+                  <path d="M-42 6 C-20 18 -10 15 0 0 C-10 -15 -20 -18 -42 -6 Z" fill="#00F5D4" opacity="0.85"/>
+                </g>
+                <circle cx="0" cy="0" r="14" fill="#0E1824" stroke="#00F5D4" stroke-width="2"/>
+              </g>
+
+              <!-- Ventilador 2 (Derecho) -->
+              <g transform="translate(285, 200)">
+                <circle cx="0" cy="0" r="48" fill="#17293D" stroke="#2A4563" stroke-width="2"/>
+                <g class="aspa-ventilador">
+                  <path d="M-6 -42 C-18 -20 -15 -10 0 0 C15 -10 18 -20 6 -42 Z" fill="#8B5CF6" opacity="0.85"/>
+                  <path d="M42 -6 C20 -18 10 -15 0 0 C10 15 20 18 42 6 Z" fill="#8B5CF6" opacity="0.85"/>
+                  <path d="M6 42 C18 20 15 10 0 0 C-15 10 -18 20 -6 42 Z" fill="#8B5CF6" opacity="0.85"/>
+                  <path d="M-42 6 C-20 18 -10 15 0 0 C-10 -15 -20 -18 -42 -6 Z" fill="#8B5CF6" opacity="0.85"/>
+                </g>
+                <circle cx="0" cy="0" r="14" fill="#0E1824" stroke="#8B5CF6" stroke-width="2"/>
+              </g>
+
+              <!-- Bahía de estado y LEDs -->
+              <circle cx="65" cy="87" r="6" fill="#10B981" class="led-chasis"/>
+              <circle cx="85" cy="87" r="6" fill="#00F5D4" class="led-chasis"/>
+              <circle cx="105" cy="87" r="6" fill="#8B5CF6" class="led-chasis"/>
+              <rect x="135" y="77" width="210" height="20" rx="4" fill="#132233"/>
+              <text x="145" y="91" fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="11">RIG-EDU-NODE // STANDBY</text>
+            </svg>
+          </div>
+        </div>
+      </section>
+    </main>
+
+
+    <!-- ====================================================================
+         SECCIÓN B: LABORATORIO DE MINERÍA — SIMULADOR PRINCIPAL
+         ==================================================================== -->
+    <section class="seccion-vista-app" id="vista-laboratorio" aria-label="Laboratorio de simulación interactiva">
+      
+      <div class="reticula-laboratorio">
+
+        <!-- COLUMNA IZQUIERDA (EQUIPO MINERO, PROCESO HASH Y CONTROLES) -->
+        <div class="columna-laboratorio">
+
+          <!-- 1. EQUIPO DE MINERÍA Y TELEMETRÍA EN TIEMPO REAL -->
+          <article class="panel-tarjeta-lab">
+            <div class="panel-cabecera">
+              <div class="panel-titulo-grupo">
+                <span class="icono-modulo-lab">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                </span>
+                <h3>Equipo Minero en Operación</h3>
+              </div>
+              <span class="badge-estado-minero estado-inactivo" id="txtEstadoMinero">Listo (En reposo)</span>
+            </div>
+
+            <!-- Ilustración animada del minero -->
+            <div class="equipo-minero-visual-caja" id="svgEquipoMinero">
+              <svg viewBox="0 0 400 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="svg-equipo-completo">
+                <rect x="15" y="15" width="370" height="150" rx="10" fill="#0B141F" stroke="#2A4563" stroke-width="2"/>
+                <!-- Tarjeta GPU 1 -->
+                <rect x="35" y="30" width="150" height="120" rx="8" fill="#132233" stroke="#1F334A" stroke-width="1.5"/>
+                <g transform="translate(110, 90)">
+                  <circle cx="0" cy="0" r="38" fill="#0E1824" stroke="#2A4563" stroke-width="2"/>
+                  <g class="aspa-ventilador">
+                    <path d="M0 -34 C-12 -18 -10 -8 0 0 C10 -8 12 -18 0 -34 Z" fill="#00F5D4"/>
+                    <path d="M34 0 C18 -12 8 -10 0 0 C8 10 18 12 34 0 Z" fill="#00F5D4"/>
+                    <path d="M0 34 C12 18 10 8 0 0 C-10 8 -12 18 0 34 Z" fill="#00F5D4"/>
+                    <path d="M-34 0 C-18 12 -8 10 0 0 C-8 -10 -18 -12 -34 0 Z" fill="#00F5D4"/>
+                  </g>
+                  <circle cx="0" cy="0" r="10" fill="#17293D" stroke="#00F5D4" stroke-width="2"/>
+                </g>
+
+                <!-- Tarjeta GPU 2 -->
+                <rect x="215" y="30" width="150" height="120" rx="8" fill="#132233" stroke="#1F334A" stroke-width="1.5"/>
+                <g transform="translate(290, 90)">
+                  <circle cx="0" cy="0" r="38" fill="#0E1824" stroke="#2A4563" stroke-width="2"/>
+                  <g class="aspa-ventilador">
+                    <path d="M0 -34 C-12 -18 -10 -8 0 0 C10 -8 12 -18 0 -34 Z" fill="#8B5CF6"/>
+                    <path d="M34 0 C18 -12 8 -10 0 0 C8 10 18 12 34 0 Z" fill="#8B5CF6"/>
+                    <path d="M0 34 C12 18 10 8 0 0 C-10 8 -12 18 0 34 Z" fill="#8B5CF6"/>
+                    <path d="M-34 0 C-18 12 -8 10 0 0 C-8 -10 -18 -12 -34 0 Z" fill="#8B5CF6"/>
+                  </g>
+                  <circle cx="0" cy="0" r="10" fill="#17293D" stroke="#8B5CF6" stroke-width="2"/>
+                </g>
+
+                <circle cx="370" cy="35" r="4" fill="#00F5D4" class="led-chasis"/>
+                <circle cx="370" cy="50" r="4" fill="#10B981" class="led-chasis"/>
+              </svg>
+            </div>
+
+            <!-- Panel de telemetría física en tiempo real -->
+            <div class="telemetria-rejilla-metricas">
+              <div class="metrica-card-telemetria">
+                <span class="metrica-etiqueta">Potencia (Hashrate)</span>
+                <span class="metrica-valor color-cyan" id="telemetriaHashrate">0 H/s</span>
+              </div>
+              <div class="metrica-card-telemetria">
+                <span class="metrica-etiqueta">Intentos Realizados</span>
+                <span class="metrica-valor" id="telemetriaIntentos">0</span>
+              </div>
+              <div class="metrica-card-telemetria">
+                <span class="metrica-etiqueta">Temperatura Chip</span>
+                <span class="metrica-valor" id="telemetriaTemperatura">38 °C</span>
+              </div>
+              <div class="metrica-card-telemetria">
+                <span class="metrica-etiqueta">Consumo Eléctrico</span>
+                <span class="metrica-valor" id="telemetriaWatts">65 W</span>
+              </div>
+              <div class="metrica-card-telemetria">
+                <span class="metrica-etiqueta">Energía Acumulada</span>
+                <span class="metrica-valor color-mint" id="telemetriaKwh">0.0000 kWh</span>
+              </div>
+              <div class="metrica-card-telemetria">
+                <span class="metrica-etiqueta">Tiempo Activo</span>
+                <span class="metrica-valor color-violet" id="telemetriaTiempo">0s</span>
+              </div>
+
+              <!-- Termómetro visual -->
+              <div class="temperatura-indicador-barra">
+                <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-soft); font-family: var(--font-mono);">
+                  <span>35°C (Ambiente)</span>
+                  <span>Alerta térmica: >75°C</span>
+                </div>
+                <div class="barra-riel-temp">
+                  <div class="barra-relleno-temp temp-normal" id="barraTemperaturaProgreso"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+
+          <!-- 2. PROCESO DE MINERÍA PROOF OF WORK (SHA-256 EN VIVO) -->
+          <article class="panel-tarjeta-lab">
+            <div class="panel-cabecera">
+              <div class="panel-titulo-grupo">
+                <span class="icono-modulo-lab">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                </span>
+                <h3>Búsqueda Criptográfica (Proof of Work)</h3>
+              </div>
+            </div>
+
+            <div class="proceso-mineria-visor">
+              <div class="etiqueta-meta-requisito">
+                <span>Condición requerida por el protocolo:</span>
+                <span class="condicion-ceros-badge">El hash debe iniciar con "00"</span>
+              </div>
+
+              <!-- Pantalla de hash generado en tiempo real -->
+              <div class="visor-hash-pantalla" id="visorHashProceso">
+                Presiona "Iniciar Minería" para calcular hashes con SHA-256...
+              </div>
+
+              <div class="nonce-live-visor">
+                <span>Valor Nonce actual probado:</span>
+                <strong id="visorNonceProceso">0</strong>
+              </div>
+            </div>
+
+            <!-- Botonera de control del minero -->
+            <div class="fila-controles-mineria">
+              <button type="button" class="btn-lab-accion btn-iniciar-verde" id="btnIniciarMinero">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span>Iniciar Minería</span>
+              </button>
+              <button type="button" class="btn-lab-accion" id="btnPausarMinero" disabled>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                <span>Pausar</span>
+              </button>
+              <button type="button" class="btn-lab-accion" id="btnReiniciarMinero">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                <span>Reiniciar</span>
+              </button>
+            </div>
+          </article>
+
+        </div>
+
+
+        <!-- COLUMNA DERECHA (DIFICULTAD, HARDWARE Y TRANSACCIONES EN MEMPOOL) -->
+        <div class="columna-laboratorio">
+
+          <!-- 3. CONTROLES DE DIFICULTAD Y HARDWARE -->
+          <article class="panel-tarjeta-lab">
+            <div class="panel-cabecera">
+              <div class="panel-titulo-grupo">
+                <span class="icono-modulo-lab">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20v-4"></path></svg>
+                </span>
+                <h3>Regulación de Dificultad</h3>
+              </div>
+            </div>
+
+            <p style="font-size: 0.84rem; color: var(--text-muted);">
+              Ajusta qué tan estricta es la condición impuesta por la red. Cada cero multiplica la fricción matemática:
+            </p>
+
+            <div class="selector-botones-grupo" role="radiogroup" aria-label="Nivel de dificultad">
+              <button type="button" class="btn-selector-opcion btn-dif-selector" data-ceros="1">
+                <strong>0</strong>
+                <span>Fácil</span>
+              </button>
+              <button type="button" class="btn-selector-opcion btn-dif-selector activo" data-ceros="2">
+                <strong>00</strong>
+                <span>Medio</span>
+              </button>
+              <button type="button" class="btn-selector-opcion btn-dif-selector" data-ceros="3">
+                <strong>000</strong>
+                <span>Difícil</span>
+              </button>
+            </div>
+
+            <div class="explicacion-micro-caja" id="txtExplicacionDificultad">
+              Nivel 2 (Intermedio): El hash debe comenzar con 2 ceros ("00"). Probabilidad: 1 de cada 256 intentos.
+            </div>
+
+            <!-- Selector de potencia -->
+            <div style="border-top: 1px solid var(--border-subtle); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.65rem;">
+              <span style="font-size: 0.84rem; font-weight: 600; color: var(--text-main);">Potencia de Hardware Asignada:</span>
+              <div class="selector-botones-grupo" role="radiogroup" aria-label="Potencia de hardware">
+                <button type="button" class="btn-selector-opcion btn-hw-selector" data-hw="cpu">
+                  <strong>CPU</strong>
+                  <span>~35 H/s</span>
+                </button>
+                <button type="button" class="btn-selector-opcion btn-hw-selector activo" data-hw="gpu">
+                  <strong>GPU Gamer</strong>
+                  <span>~190 H/s</span>
+                </button>
+                <button type="button" class="btn-selector-opcion btn-hw-selector" data-hw="asic">
+                  <strong>ASIC</strong>
+                  <span>~650 H/s</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+
+          <!-- 4. TRANSACCIONES PENDIENTES (MEMPOOL EDUCATIVO) -->
+          <article class="panel-tarjeta-lab">
+            <div class="panel-cabecera">
+              <div class="panel-titulo-grupo">
+                <span class="icono-modulo-lab">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                </span>
+                <h3>Transacciones en Mempool</h3>
+              </div>
+              <span style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--accent-cyan);">Por empaquetar</span>
+            </div>
+
+            <p style="font-size: 0.82rem; color: var(--text-muted);">
+              Operaciones del aula esperando ser selladas dentro del próximo bloque:
+            </p>
+
+            <ul class="lista-transacciones-mempool" id="listaMempoolTransacciones">
+              <!-- Renderizado dinámicamente con JS -->
+            </ul>
+          </article>
+
+        </div>
+
+      </div>
+
+
+      <!-- 5. VISOR DE LA CADENA DE BLOQUES CONECTADOS (BLOCKCHAIN) -->
+      <article class="visor-cadena-bloques-caja" style="margin-top: 1.75rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="var(--accent-cyan)"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+            <h3 style="font-size: 1.08rem; color: var(--text-main);">Cadena de Bloques Conectada (Blockchain)</h3>
+          </div>
+          <span style="font-size: 0.78rem; color: var(--text-soft); font-family: var(--font-mono);">Haz clic en cualquier bloque para inspeccionarlo</span>
+        </div>
+
+        <div id="visorCadenaBloques">
+          <!-- Renderizado dinámicamente con enlaces SVG -->
+        </div>
+      </article>
+
+    </section>
+
+
+    <!-- ====================================================================
+         SECCIÓN C: APRENDE — 9 TEMAS EDUCATIVOS
+         ==================================================================== -->
+    <section class="seccion-vista-app" id="vista-aprende" aria-label="Sección de conceptos y aprendizaje">
+      <div style="margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.85rem; color: var(--text-main); letter-spacing: -0.02em;">Aprende mientras experimentas</h2>
+        <p style="color: var(--text-muted); font-size: 0.98rem; max-width: 720px; margin-top: 0.35rem;">
+          Explicaciones claras, ilustradas y con analogías cotidianas para comprender los 9 pilares de las redes descentralizadas sin fórmulas aburridas.
+        </p>
+      </div>
+
+      <div class="rejilla-temas-educativos" id="rejillaTemasEducativos">
+        <!-- Renderizado dinámicamente mediante JS -->
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         SECCIÓN D: BANCO DE EXPERIMENTOS INTERACTIVOS
+         ==================================================================== -->
+    <section class="seccion-vista-app" id="vista-experimentos" aria-label="Banco de experimentos interactivos">
+      <div style="margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.85rem; color: var(--text-main); letter-spacing: -0.02em;">Laboratorio de Experimentos Prácticos</h2>
+        <p style="color: var(--text-muted); font-size: 0.98rem; max-width: 720px; margin-top: 0.35rem;">
+          Manipula las variables con tus propias manos y observa qué ocurre con el hash, la dificultad y la potencia en tiempo real.
+        </p>
+      </div>
+
+      <div class="rejilla-experimentos-laboratorio">
+
+        <!-- EXPERIMENTO 1: EFECTO AVALANCHA -->
+        <article class="tarjeta-experimento-box">
+          <div class="experimento-cabecera">
+            <div>
+              <span class="experimento-etiqueta-num">Experimento 01</span>
+              <h3 class="experimento-titulo">Cambia un solo dato (Efecto Avalancha)</h3>
+            </div>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="var(--accent-cyan)"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+          </div>
+
+          <p style="font-size: 0.86rem; color: var(--text-muted);">
+            Escribe en ambos campos. Cambia una sola letra o un punto en el segundo texto y observa cómo el hash resultante se transforma radicalmente.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div>
+              <label style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-soft);">Texto Original A:</label>
+              <input type="text" class="campo-texto-exp" id="exp1InputA" value="Lucas pagó 5 monedas a Sofía">
+              <div class="codigo-hash-caja" id="exp1HashA" style="margin-top: 0.35rem;"></div>
+            </div>
+
+            <div>
+              <label style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-soft);">Texto Modificado B (Prueba cambiar 1 letra):</label>
+              <input type="text" class="campo-texto-exp" id="exp1InputB" value="Lucas pagó 6 monedas a Sofía">
+              <div class="codigo-hash-caja" id="exp1HashB" style="margin-top: 0.35rem; color: var(--accent-violet);"></div>
+            </div>
+
+            <div style="background: var(--bg-card); padding: 0.75rem 0.95rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+              <div style="height: 6px; background: var(--bg-input); border-radius: 3px; overflow: hidden; margin-bottom: 0.5rem;">
+                <div id="exp1BarraDiff" style="height: 100%; width: 50%; background: var(--accent-cyan); transition: width 200ms ease;"></div>
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);" id="exp1BitsDiff">Calculando diferencia de bits...</p>
+            </div>
+          </div>
+        </article>
+
+
+        <!-- EXPERIMENTO 2: MODIFICA EL NONCE -->
+        <article class="tarjeta-experimento-box">
+          <div class="experimento-cabecera">
+            <div>
+              <span class="experimento-etiqueta-num">Experimento 02</span>
+              <h3 class="experimento-titulo">Búsqueda Manual con el Nonce</h3>
+            </div>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="var(--accent-violet)"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          </div>
+
+          <p style="font-size: 0.86rem; color: var(--text-muted);">
+            Los datos del bloque están fijos. Tu objetivo es encontrar manualmente un Nonce que produzca un hash que inicie con <strong>"0"</strong>.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="number" class="campo-texto-exp" id="exp2NonceInput" value="0" min="0" style="font-family: var(--font-mono); font-size: 1.1rem; text-align: right;">
+              <button type="button" class="btn-cta-secundario" id="btnExp2Sumar" style="padding: 0.65rem 1rem;">+1</button>
+              <button type="button" class="btn-cta-primario" id="btnExp2Probar" style="padding: 0.65rem 1rem;">Probar</button>
+            </div>
+
+            <div class="codigo-hash-caja" id="exp2HashSalida">0000...</div>
+            <div class="feedback-experimento fallo" id="exp2ResultadoFeedback">Ingresa un número y prueba.</div>
+          </div>
+        </article>
+
+
+        <!-- EXPERIMENTO 3: CURVA DE DIFICULTAD -->
+        <article class="tarjeta-experimento-box">
+          <div class="experimento-cabecera">
+            <div>
+              <span class="experimento-etiqueta-num">Experimento 03</span>
+              <h3 class="experimento-titulo">Modifica la Dificultad (Curva de Esfuerzo)</h3>
+            </div>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="var(--accent-mint)"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          </div>
+
+          <p style="font-size: 0.86rem; color: var(--text-muted);">
+            Añadir ceros al inicio del hash no suma dificultad linealmente: ¡la multiplica por 16 en cada paso!
+          </p>
+
+          <div class="tabla-curva-dificultad" id="tablaCurvaDificultad">
+            <!-- Renderizado dinámico -->
+          </div>
+        </article>
+
+
+        <!-- EXPERIMENTO 4: CARRERA DE POTENCIA (CPU vs ASIC) -->
+        <article class="tarjeta-experimento-box">
+          <div class="experimento-cabecera">
+            <div>
+              <span class="experimento-etiqueta-num">Experimento 04</span>
+              <h3 class="experimento-titulo">Carrera de Equipos (CPU vs ASIC)</h3>
+            </div>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="var(--accent-cyan)"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
+
+          <p style="font-size: 0.86rem; color: var(--text-muted);">
+            Pon a competir dos equipos frente al mismo reto ("00"). ¿Ganará siempre el equipo más rápido, o el azar puede darle la victoria a la CPU?
+          </p>
+
+          <div class="carrera-pistas-contenedor">
+            <div class="pista-equipo-fila">
+              <div style="display: flex; justify-content: space-between; font-size: 0.82rem;">
+                <span><strong>CPU Básica</strong> (~25 H/s)</span>
+                <span id="intentosCPU" style="font-family: var(--font-mono); color: var(--accent-cyan);">0 intentos</span>
+              </div>
+              <div class="riel-carrera"><div class="barra-avance-equipo cpu-barra" id="barraProgresoCPU"></div></div>
+            </div>
+
+            <div class="pista-equipo-fila">
+              <div style="display: flex; justify-content: space-between; font-size: 0.82rem;">
+                <span><strong>ASIC Especializado</strong> (~300 H/s)</span>
+                <span id="intentosASIC" style="font-family: var(--font-mono); color: var(--accent-violet);">0 intentos</span>
+              </div>
+              <div class="riel-carrera"><div class="barra-avance-equipo asic-barra" id="barraProgresoASIC"></div></div>
+            </div>
+
+            <button type="button" class="btn-cta-primario" id="btnIniciarCarreraEquipos" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+              <span>Iniciar Carrera de Minería</span>
+            </button>
+            <div id="txtEstadoCarrera" style="font-size: 0.84rem; color: var(--text-muted); text-align: center;">Listo para comenzar la carrera.</div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         SECCIÓN E: RETOS Y EVALUACIÓN DE APRENDIZAJE
+         ==================================================================== -->
+    <section class="seccion-vista-app" id="vista-evaluacion" aria-label="Sección de evaluación y retos">
+      <div class="evaluacion-contenedor">
+        
+        <div style="text-align: center; margin-bottom: 0.5rem;">
+          <h2 style="font-size: 1.85rem; color: var(--text-main); letter-spacing: -0.02em;">Retos y Evaluación del Laboratorio</h2>
+          <p style="color: var(--text-muted); font-size: 0.98rem; max-width: 600px; margin: 0.35rem auto 0;">
+            Comprueba lo aprendido resolviendo las 6 preguntas. Recibirás pistas inmediatas si te equivocas para aprender en cada intento.
+          </p>
+        </div>
+
+        <div id="cajaPreguntasEvaluacion" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <!-- Preguntas renderizadas por JS -->
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
+          <button type="button" class="btn-cta-primario" id="btnCalificarEvaluacion" style="padding: 0.9rem 2.2rem;">
+            <span>Finalizar y Ver Mi Certificado</span>
+          </button>
+          <button type="button" class="btn-cta-secundario" id="btnReiniciarQuiz">
+            <span>Reiniciar Cuestionario</span>
+          </button>
+        </div>
+
+        <!-- Caja de resultados y medalla desbloqueable -->
+        <div id="cajaResultadosEvaluacion" style="display: none; margin-top: 1.5rem;"></div>
+
+      </div>
+    </section>
+
+  </div>
+
+
+  <!-- ====================================================================
+       ASISTENTE FLOTANTE DOCKED (GUÍA CONTEXTUAL)
+       ==================================================================== -->
+  <div class="contenedor-asistente-dock" id="contenedorAsistenteDock">
+    <!-- Renderizado por js/assistant.js -->
+  </div>
+
+
+  <!-- ====================================================================
+       MODALES INFORMATIVOS (RECOMPENSA, DETALLE DE BLOQUE Y TEMAS)
+       ==================================================================== -->
+
+  <!-- Modal 1: Recompensa de Minero -->
+  <div class="modal-telon-fondo" id="modalRecompensaBloque" role="dialog" aria-modal="true" aria-labelledby="tituloModalRecompensa">
+    <div class="modal-caja-dialogo">
+      <div class="modal-cabecera">
+        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--accent-mint);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+          <h3 id="tituloModalRecompensa" style="font-size: 1.25rem;">¡Bloque Resuelto y Verificado!</h3>
+        </div>
+        <button type="button" class="btn-cerrar-modal-x" id="btnCerrarModalRecompensa" aria-label="Cerrar ventana">✕</button>
+      </div>
+      <div style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6;" id="txtDetalleRecompensaModal"></div>
+      <button type="button" class="btn-cta-primario" onclick="document.getElementById('modalRecompensaBloque').classList.remove('modal-activo')" style="align-self: flex-end;">
+        <span>Continuar al Siguiente Bloque</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal 2: Detalle de Bloque Conectado -->
+  <div class="modal-telon-fondo" id="modalDetalleBloque" role="dialog" aria-modal="true" aria-labelledby="tituloDetalleBloque">
+    <div class="modal-caja-dialogo" style="max-width: 640px;">
+      <div class="modal-cabecera">
+        <h3 id="tituloDetalleBloque" style="font-size: 1.2rem; color: var(--text-main);">Inspección Criptográfica del Bloque</h3>
+        <button type="button" class="btn-cerrar-modal-x" id="btnCerrarDetalleBloque" aria-label="Cerrar ventana">✕</button>
+      </div>
+      <div id="cuerpoDetalleBloqueModal"></div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Detalle de Tema Educativo -->
+  <div class="modal-telon-fondo" id="modalDetalleTema" role="dialog" aria-modal="true" aria-labelledby="txtTituloModalTema">
+    <div class="modal-caja-dialogo" style="max-width: 640px;">
+      <div class="modal-cabecera">
+        <h3 id="txtTituloModalTema" style="font-size: 1.25rem; color: var(--accent-violet);">Concepto</h3>
+        <button type="button" class="btn-cerrar-modal-x" id="btnCerrarModalTema" aria-label="Cerrar ventana">✕</button>
+      </div>
+      <div id="cuerpoModalTema"></div>
+    </div>
+  </div>
+
+
+  <!-- ====================================================================
+       SCRIPTS MODULARES DE LA APLICACIÓN (VANILLA, SIN DEPENDENCIAS EXTERNAS)
+       ==================================================================== -->
+  <script src="js/crypto.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/blockchain.js"></script>
+  <script src="js/simulation.js"></script>
+  <script src="js/experiments.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/assistant.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
